@@ -1,4 +1,4 @@
-FROM node:13-slim
+FROM node:13-alpine
 WORKDIR /usr/local/src
 
 COPY yarn.lock .

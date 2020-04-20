@@ -44,7 +44,7 @@ jobs:
     - name: Build and publish docker image
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: gunnarholwerda/turnip-tracker/discord-bot
+        name: gunnarholwerda/turnip-bot/discord-bot
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
