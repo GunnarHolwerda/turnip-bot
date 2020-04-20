@@ -1,7 +1,6 @@
 import 'reflect-metadata';
+import * as dotenv from 'dotenv';
 import { Client, User as Author, Message } from 'discord.js';
-import DiscordConfig from './config/discord.json';
-import RedisConfig from './config/redis.json';
 import { createConnection, Repository } from 'typeorm';
 import { User } from './entity/user';
 import Redis from 'ioredis';
@@ -11,6 +10,7 @@ import { SalePrice } from './commands/sale-price';
 import { Command } from './commands/command';
 import { PredictPrice } from './commands/predict-price';
 import { DiscordServer } from './entity/discord-server';
+dotenv.config();
 
 const getOrCreateUserForMessageAuthor = async (
     repository: Repository<User>,
@@ -49,7 +49,7 @@ const getOrCreateDiscordServer = async (
 };
 
 const client = new Client();
-const redis = new Redis({ host: RedisConfig.host, port: RedisConfig.port });
+const redis = new Redis({ host: process.env.REDIS_HOST, port: parseInt(process.env.REDIS_PORT || '6379') });
 
 (async (): Promise<void> => {
     const connection = await createConnection();
@@ -104,7 +104,7 @@ const redis = new Redis({ host: RedisConfig.host, port: RedisConfig.port });
         })();
     });
 
-    client.login(DiscordConfig.token);
+    client.login(process.env.DISCORD_TOKEN);
 
     // CAPTURE APP TERMINATION / RESTART EVENTS
     // To be called when process is restarted or terminated
