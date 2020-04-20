@@ -36,3 +36,16 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Build project
       run: yarn run build
+
+    - name: Get release version
+      id: get_version
+      run: echo ::set-env name=RELEASE_VERSION::$(git log -1 --pretty=%h)
+    
+    - name: Build and publish docker image
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: gunnarholwerda/turnip-tracker/discord-bot
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        tags: "latest,${{ env.RELEASE_VERSION }}"
